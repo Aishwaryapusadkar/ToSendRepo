@@ -1,0 +1,100 @@
+SUBSCRIPTION FUNCTION:
+======================
+
+The BSE ETI provides information across sessions via a subscription mechanism. This includes
+trade notifications at a session level, the complete order history of standard orders of another session (listener broadcast), and public news messages.
+
+Subscription is handled via the Subscribe message. The Subscribe Response message confirms the
+subscription followed by Service Availability messages providing the current status of the
+partitions.
+
+OrderMassActionReport (BZ) message is used for responses and notifications.
+
+==================================================================================================================
+
+A subscription refers to a request made by a participant (e.g., brokers, clearing members, or trading platforms) to receive real-time or near-real-time trade-related data. The subscription allows them to subscribe to a specific broadcast of trade-related messages provided by the exchange, such as executions, cancellations, modifications, or corrections, directly from the trading system.
+
+This subscription mechanism helps participants manage and track their trading activity more effectively by ensuring they have access to trade data in real time. In your code, once the subscription is successful, it enables the participant to start receiving data from BSE's Drop Copy broadcast.
+
+Key Elements of the Request:
+MHeader
+BodyLen
+TemplateId
+RHeader
+MsgSeqNum
+SubscriptionScope: Specifies the type of data to subscribe to. In your code, SubscriptionScope is set to 4294967295, which typically means "subscribe to everything" or fetch all available data.
+RefAppId: This is a reference application ID (1 in your case), which identifies the specific application or user requesting the subscription.
+
+Response: SubscribeResponseObject or RejectObject
+Once the subscription request is sent, a response is received from the BSE system. This response can either be a subscription confirmation or a rejection.
+
+Key Elements of the Response:
+MessageResponseHeader: The response contains a message header that includes information like:
+
+TemplateId: An ID indicating the type of response (success or rejection).
+BodyLen: The length of the response body.
+Subscription Success Response (SubscribeResponseObject): If the subscription request is successful, you receive a 
+
+SubscribeResponseObject{
+
+Header: The response header.
+Body: Additional details of the subscription success.
+Rejection Response (RejectObject): If the request is rejected, you receive a RejectObject.} This rejection includes:
+
+{Reason: A string describing why the request was rejected.
+RejectObject: A structure with detailed information on the rejection.}
+
+===================================================================================================================
+===================================================================================================================
+
+FEED FUNCTION:
+==============
+
+Continuously captures incoming data feed,
+Parses and processes packets,
+Handles different message types appropriately,
+Uses worker pools to handle the load,
+And ensures error logging and graceful termination when required.
+
+Request (Incoming Data):
+----------------------------
+The connection is established via net.Conn, and incoming messages are read using utils.Recv (which likely reads data from the connection stream).
+Each message has a header, defined as models.MessageResponseHeader, which contains metadata, including the TemplateId that identifies the type of message (e.g., trade data, heartbeat, rejection, or logout).
+Depending on the TemplateId, the program processes the message accordingly.
+
+Response (Processed Data):
+-----------------------------
+1. Trade Data (TradeTemplateId): When a trade packet is received, the parseTradePacket function is invoked to extract the body of the trade message and enqueue the trade object to a worker pool for further processing.
+
+2. Heartbeat (HeartbeatTemplateId): When a heartbeat packet is received, the system logs that a heartbeat was received, and no further action is taken.
+
+3. Rejection (RejectedTemplateId): If a rejection message is encountered, the system parses the rejection details and logs the reason.
+
+4. Session Logout (SessionLogoutTemplateId): The system logs a session logout and stops further processing.
+
+===========================================================================================================
+
+Why Heartbeat is Important in BSE Drop Copy:
+1. Real-time Trade Confirmation: The heartbeat ensures that there are no interruptions in the stream of real-time trade confirmations, order updates, and other critical messages.
+
+2. System Reliability: By monitoring the heartbeat, both BSE and the client's systems can quickly detect and respond to network or system failures, ensuring the reliability and robustness of the trading infrastructure.
+
+3. Avoiding Data Loss
+
+==========================================================
+
+Retransmission:
+
+Retransmission is triggered when the recipient (broker or financial institution) detects a gap in the sequence of messages received via Drop Copy. For example, if messages with sequence numbers 2001 and 2003 are received, but 2002 is missing, the system can request retransmission of the missing data.
+
+=========================================================================================
+=========================================================================================
+
+RESPONSE STATUS:
+================
+MatchingEngineStatus (25005) informs about the availability of the order
+ management services.
+ • TradeManagerStatus (25006) informs about the availability of the trade
+ broadcast services.
+ • ApplSeqStatus (28732) informs about the availability of the retransmission
+ services for order and Quote events (session data and listener data).

@@ -1,0 +1,82 @@
+ PAGE NO. 63
+ ===========
+ SESSION LAYER 
+ ALL TEMPLATE_ID GIVEN ON THIS PAGE .
+
+ PAGE NO. 139
+=============
+
+SUBSCRIBE REQUEST : 
+
+type SubscribeRequest struct {
+	MHeader           MessageRequestHeader:
+	{
+		BodyLen
+		TemplateId: 10025
+	}
+	RHeader           RequestHeader
+	SubscriptionScope uint32 => 25001
+	RefAppId          uint8
+	Filler            [3]byte
+}
+
+Send function call here, getting the binary data and convert it into byte format.
+then recv function call , convert byte into object format.
+and check whether TemplateId is 10010 then parseRejectPkt function call and it return season of being rejected.
+
+PAGENO. 141
+===========
+
+SUBSCRIBE RESPONSE : SubscriptionResponseTemplateId=> 10005
+
+type SubscribeResponseBody struct {
+	RHeader  ResponseHeader
+	AppSubId uint8
+	Filler   [4]byte
+}
+
+type SubscribeResponseObject struct {
+	Header MessageResponseHeader
+	Body   SubscribeResponseBody
+}
+
+=====================================
+=====================================
+
+StartFeedCapturing FUNCTION:
+---------------------------
+
+Feed Capturing (StartFeedCapturing): This function captures incoming data 
+from a network connection and processes different types of packets. It uses a worker pool to handle trade packets concurrently and logs various packet types like rejected packets, 
+heartbeats, trade packets, and session logouts.
+
+recv function calls and check whether TemplateId => 10010
+
+parseRejectedPkt calls and resason will send.
+
+HeartbeatTemplateId=> 10023
+TradeTemplateId => 10500
+parseTradePacket function calls here and getting trade data
+{
+	TradeBody
+	TradeObject{
+		
+	}
+}
+
+=======================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

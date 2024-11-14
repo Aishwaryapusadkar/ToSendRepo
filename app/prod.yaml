@@ -1,0 +1,15 @@
+version: 1.0
+gateway:
+  host: 0.0.0.0
+  port: 8001
+credentials:
+  password: bse12345
+  sessionid: 10300000
+  membercode: 103
+workerpool:
+  size: 10
+log:
+  path: app.log
+  level: -1
+file:
+  data-file: bse.csv

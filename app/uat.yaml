@@ -1,0 +1,15 @@
+version: 1.0
+gateway:
+  host: 192.168.56.1
+  port: 8081
+credentials:
+  password: bse12345
+  sessionid: 805100200
+  embercode: 8051
+workerpool:
+  size: 10
+log:
+  path: app.log
+  level: -1
+file:
+  data-file: bse.csv
