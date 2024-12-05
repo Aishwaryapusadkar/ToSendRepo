@@ -3,8 +3,6 @@ package main
 import (
 	"bse-eti-stream/pkg/config"
 	"bse-eti-stream/pkg/logger"
-
-	//"bse-eti-stream/pkg/utils"
 	"bse-eti-stream/pkg/messages"
 
 	"context"
@@ -14,9 +12,9 @@ import (
 	"os"
 	"strconv"
 
+	_ "github.com/lib/pq"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	//_ "github.com/lib/pq"
 )
 
 func main() {
@@ -37,7 +35,6 @@ func main() {
 		log.Fatal("Failed to start server, err:", err)
 		os.Exit(1)
 	}
-	// addShutdownHook()
 }
 
 func start(c context.Context) error {
@@ -77,8 +74,8 @@ func start(c context.Context) error {
 	// dbPassword := config.GetConfig().GetString("db.password")
 	// dbName := config.GetConfig().GetString("db.name")
 
-	// Construct the PostgreSQL connection string
-	// dbConnStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
+	//Construct the PostgreSQL connection string
+	//dbConnStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	//    dbConnStr := "host=localhost port=5432 user=postgres password=password dbname=open_position sslmode=disable"
 
@@ -97,8 +94,8 @@ func start(c context.Context) error {
 	//         return err
 	//     }
 
-	//     // Log successful database connection
-	//     logger.Log(c).Info("Connected to the database successfully.")
+	// Log successful database connection
+	// logger.Log(c).Info("Connected to the database successfully.")
 
 	// //API gateway connection
 	// primaryConnStr, secondaryConnStr, err := messages.ConnectToGateway(c, conn)
@@ -128,16 +125,16 @@ func start(c context.Context) error {
 	// 	return err
 	// }
 
-	// if err := messages.UserLogin(c, conn); err != nil {
-	// 	logger.Log(c).Error("User login failed", zap.Error(err))
-	// 	return err
-	// }
+	if err := messages.UserLogin(c, conn); err != nil {
+		logger.Log(c).Error("User login failed", zap.Error(err))
+		return err
+	}
 
-	// if err := messages.Subscribe(c, conn); 
-	// err != nil {
-	// 	logger.Log(c).Error("Subscription failed", zap.Error(err))
-	// 	return err
-	// }
+	if err := messages.Subscribe(c, conn);
+	err != nil {
+		logger.Log(c).Error("Subscription failed", zap.Error(err))
+		return err
+	}
 
 	if err := messages.StartFeedCapturing(c, conn); err != nil {
 		logger.Log(c).Error("Feed Capturing failed", zap.Error(err))

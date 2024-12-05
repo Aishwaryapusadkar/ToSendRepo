@@ -123,55 +123,55 @@ type RBCHeaderSt struct {
 }
 
 type TradeBody struct {
-	RHeader                    RBCHeaderSt
-	SecurityId                 int64
-	RelatedSecurityId          int64
-	Price                      int64
-	LastPrice                  int64
-	SideLastPrice              int64
+	RHeader           RBCHeaderSt
+	SecurityId        int64
+	RelatedSecurityId int64
+	Price             int64
+	LastPrice         int64
+	SideLastPrice     int64
 	//ClearingTradePrice         int64   //m
 	//Yeild                      int64   //m
 	//UnderlyingDirtyPrice       int64    //m
-	TransactionTime            uint64
-	OrderId                    uint64
-	SenderLocationId           uint64
-	CIOrdId                    uint64
+	TransactionTime  uint64
+	OrderId          uint64
+	SenderLocationId uint64
+	CIOrdId          uint64
 	//Activitytime               uint64//
-	Filler1                    uint64 //
-	Filler2                    uint32
-	MsgTag                     int32
-	TradeId                    uint32
-	OrigTradeId                uint32
-	BusinessUnitId             uint32 //**
-	SessionId                  uint32
-	OwnerUserId                uint32 //**
-	PartyIdClearingUnit        uint32
-	CumQty                     int32
-	LeavesQty                  int32
-	MarketSegmentId            int32
-	RelatedSymbol              int32
-	LastQty                    int32
-	SideLastQty                int32
+	Filler1             uint64 //
+	Filler2             uint32
+	MsgTag              int32
+	TradeId             uint32
+	OrigTradeId         uint32
+	BusinessUnitId      uint32 //**
+	SessionId           uint32
+	OwnerUserId         uint32 //**
+	PartyIdClearingUnit uint32
+	CumQty              int32
+	LeavesQty           int32
+	MarketSegmentId     int32
+	RelatedSymbol       int32
+	LastQty             int32
+	SideLastQty         int32
 	//ClearingTradeQty           int32
-	SideTradeId                uint32
-	MatchDate                  uint32
-	TradeMatch                 uint32
-	StrategyLinkId             uint32
-	TotNumTradeReports         int32
-	Filler4                    uint16
-	MultiLegReportingType      uint8
-	TradeReportType            uint8
-	TrasnferReason             uint8
+	SideTradeId           uint32
+	MatchDate             uint32
+	TradeMatch            uint32
+	StrategyLinkId        uint32
+	TotNumTradeReports    int32
+	Filler4               uint16
+	MultiLegReportingType uint8
+	TradeReportType       uint8
+	TrasnferReason        uint8
 	//RollOverFlag               uint8
 	PartyIdBeneficiery         [9]byte
 	PartyIdTakeupTradingfirm   [5]byte
 	PartyIdOrderOrignatingFirm [7]byte
 	AccountType                uint8
-	AggresorSide				uint8
+	AggresorSide               uint8
 	MatchType                  uint8
 	MatchSubType               uint8
 	Side                       uint8
-	AggresorIndicator         uint8
+	AggresorIndicator          uint8
 	TradingCapacity            uint8
 	Account                    [2]byte
 	PositionEffect             [1]byte
@@ -179,18 +179,18 @@ type TradeBody struct {
 	//AlgoId                     [16]byte
 	//ClientCode                 [12]byte
 	//CPCCode                    [12]byte
-	FreeText1                  [12]byte
-	FreeText2                  [12]byte
-	FreeText3                  [12]byte
-	OrderCategory              [1]byte
-	OrderType                  uint8
-	RelatedproductComplex      uint8
-	OrderSide                  uint8
-	PartyClearingOrganisation  [4]byte
-	PartyExecutingFirm         [5]byte
-	PartyExecutingTrader       [6]byte
-	PartyClearingFirm          [5]byte
-	Filler5                    [7]byte
+	FreeText1                 [12]byte
+	FreeText2                 [12]byte
+	FreeText3                 [12]byte
+	OrderCategory             [1]byte
+	OrderType                 uint8
+	RelatedproductComplex     uint8
+	OrderSide                 uint8
+	PartyClearingOrganisation [4]byte
+	PartyExecutingFirm        [5]byte
+	PartyExecutingTrader      [6]byte
+	PartyClearingFirm         [5]byte
+	Filler5                   [7]byte
 }
 type TradeObject struct {
 	Header MessageResponseHeader
@@ -286,4 +286,123 @@ type RejectBody struct {
 type RejectObject struct {
 	Header MessageResponseHeader
 	Body   RejectBody
+}
+
+// Example struct for BXT trade data
+type Bxttrade struct {
+	//RHeader                        RequestHeader
+	BxtSecurityId                  int64
+	BxtRelatedSecurityId           int64
+	BxtPrice                       float64
+	BxtLastPrice                   float64
+	BxtSideLastPrice               float64
+	BxtTransactionTime             int64
+	BxtOrderId                     int64
+	BxtSenderLocationId            int64
+	BxtCIOrdId                     int64
+	BxtMsgTag                      int32
+	BxtTradeId                     int64
+	BxtOrigTradeId                 int64
+	BxtBusinessUnitId              int64
+	BxtSessionId                   int64
+	BxtOwnerUserId                 int64
+	BxtPartyIdClearingUnit         int64
+	BxtCumQty                      int32
+	BxtLeavesQty                   int32
+	BxtMarketSegmentId             int32
+	BxtRelatedSymbol               int32
+	BxtLastQty                     int32
+	BxtSideLastQty                 int32
+	BxtSideTradeId                 int64
+	BxtMatchDate                   int32
+	BxtTradeMatch                  int32
+	BxtStrategyLinkId              int32
+	BxtTotNumTradeReports          int32
+	BxtMultiLegReportingType       int32
+	BxtTradeReportType             int32
+	BxtTransferReason              int32
+	BxtPartyIdBeneficiary          string
+	BxtPartyIdTakeupTradingFirm    string
+	BxtPartyIdOrderOriginatingFirm string
+	BxtAccountType                 int32
+	BxtAggressorSide               int32
+	BxtMatchType                   int32
+	BxtMatchSubType                int32
+	BxtSide                        int32
+	BxtAggressorIndicator          int32
+	BxtTradingCapacity             int32
+	BxtAccount                     string
+	BxtPositionEffect              string
+	BxtFreeText1                   string
+	BxtFreeText2                   string
+	BxtFreeText3                   string
+	BxtOrderCategory               string
+	BxtOrderType                   int32
+	BxtRelatedProductComplex       int32
+	BxtOrderSide                   int32
+	BxtPartyClearingOrganisation   string
+	BxtPartyExecutingFirm          string
+	BxtPartyExecutingTrader        string
+	BxtPartyClearingFirm           string
+	BxtFiller5                     string
+}
+
+type TradeHeader struct {
+	SecurityId                 int64
+	RelatedSecurityId          int64
+	Price                      int64
+	LastPrice                  int64
+	SideLastPrice              int64
+	TransactionTime            uint64
+	OrderId                    uint64
+	SenderLocationId           uint64
+	CIOrdId                    uint64
+	Filler1                    uint64 //
+	Filler2                    uint32
+	MsgTag                     int32
+	TradeId                    uint32
+	OrigTradeId                uint32
+	BusinessUnitId             uint32 //**
+	SessionId                  uint32
+	OwnerUserId                uint32 //**
+	PartyIdClearingUnit        uint32
+	CumQty                     int32
+	LeavesQty                  int32
+	MarketSegmentId            int32
+	RelatedSymbol              int32
+	LastQty                    int32
+	SideLastQty                int32
+	SideTradeId                uint32
+	MatchDate                  uint32
+	TradeMatch                 uint32
+	StrategyLinkId             uint32
+	TotNumTradeReports         int32
+	Filler4                    uint16
+	MultiLegReportingType      uint8
+	TradeReportType            uint8
+	TrasnferReason             uint8
+	PartyIdBeneficiery         [9]byte
+	PartyIdTakeupTradingfirm   [5]byte
+	PartyIdOrderOrignatingFirm [7]byte
+	AccountType                uint8
+	AggresorSide               uint8
+	MatchType                  uint8
+	MatchSubType               uint8
+	Side                       uint8
+	AggresorIndicator          uint8
+	TradingCapacity            uint8
+	Account                    [2]byte
+	PositionEffect             [1]byte
+	FreeText1                  [12]byte
+	FreeText2                  [12]byte
+	FreeText3                  [12]byte
+	OrderCategory              [1]byte
+	OrderType                  uint8
+	RelatedproductComplex      uint8
+	OrderSide                  uint8
+	PartyClearingOrganisation  [4]byte
+	PartyExecutingFirm         [5]byte
+	PartyExecutingTrader       [6]byte
+	PartyClearingFirm          [5]byte
+	Filler5                    [7]byte
 }

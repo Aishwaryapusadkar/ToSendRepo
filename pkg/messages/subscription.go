@@ -37,7 +37,9 @@ func Subscribe(c context.Context, conn net.Conn) error {
 		logger.Log().Error("Failed to send the request", zap.Error(err))
 		return err
 	}
-	if _, err := utils.Recv(conn, &header, 8, SUBSCRIPTION); err != nil {
+	if _, err := utils.Recv(conn, &header, 8, SUBSCRIPTION); 
+	
+	err != nil {
 		logger.Log().Error("Failed to read the header", zap.Error(err))
 		return err
 	}
@@ -49,6 +51,7 @@ func Subscribe(c context.Context, conn net.Conn) error {
 		}
 		return errors.New(reason)
 	} else if header.TemplateId == SubscriptionResponseTemplateId {
+		fmt.Println("Header templateid:", header.TemplateId)
 		response, err = parseSubscriptionResponsePkt(conn, header, SUBSCRIPTION)
 		if err != nil {
 			logger.Log().Error("Failed to parse the ", zap.Error(err))

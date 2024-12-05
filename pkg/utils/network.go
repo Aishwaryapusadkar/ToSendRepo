@@ -6,8 +6,8 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
-	"log"
 	"net"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -39,29 +39,34 @@ func Recv(conn net.Conn, dst interface{}, size int, mType string) ([]byte, error
 	fmt.Println("Reading:", size)
 	n, err := conn.Read(bytes)
 	fmt.Printf("Received bytes from conn.Read:")
-	fmt.Println(bytes)
-	log.Printf("RECIEVING DATA")
+	fmt.Println("receiving receiving ", bytes)
+
+	//fmt.Println("RECIEVING DATA")
 	if err != nil {
 		logger.Log().Error("Failed to read data", zap.String("mType", mType))
 		return bytes, err
 	}
 	if n > 0 {
 		// dst = bytes
-		fmt.Println("##", dst)
+		// fmt.Println("##", dst)
 
 		// TODO: Populate the dst with the bytes, without converting the byte ordering
 
-		fmt.Println("Before converting to little endian: ", dst)
+		// fmt.Println("Before converting to little endian: ", dst)
 		err := fromLittleEndian(bytes, dst, mType)
-		fmt.Println("After converting to little endian: ", dst)
+		// fmt.Println("After converting to little endian: ", dst)
 		if err == nil {
-			logger.Log().Info("data     ...........", zap.Any("data", dst))
+			// logger.Log().Info("data     ...........", zap.Any("data", dst))
 		} else {
 			logger.Log().Error("Failed to parse data from little endian", zap.String("mType", mType), zap.Error(err))
 
 			return bytes, err
 		}
 	}
+	fmt.Println("$$$$$$$$$bytes", string(bytes))
+
+	fmt.Println("dst:", dst)
+	time.Sleep(time.Second * 1)
 
 	return bytes, nil
 }
@@ -82,16 +87,16 @@ func toLitteEndian(data interface{}, mType string) ([]byte, error) {
 
 func fromLittleEndian(dataToRead []byte, dst interface{}, mType string) error {
 	buff := bytes.NewReader(dataToRead)
-	fmt.Println("-------", dataToRead)
-	fmt.Println(mType)
-	fmt.Println("_______", dst)
-	fmt.Println("*****", buff)
+	// fmt.Println("-------", dataToRead)
+	// fmt.Println(mType)
+	// fmt.Println("_______", dst)
+	// fmt.Println("*****", buff)
 
 	if err := binary.Read(buff, binary.LittleEndian, dst); err != nil {
 		logger.Log().Error("failed to convert into object from little-endian", zap.Error(err), zap.String("mType", mType))
 		return err
 	}
-	fmt.Println("After binary.read: ", dst)
+	// fmt.Println("After binary.read: ", dst)
 	return nil
 }
 
